@@ -25,7 +25,7 @@ Gizmos.Prototype.Analytics = {
 
 	startTracking: function(urchinID) {
 	    Gizmos.Analytics.urchinID = urchinID;
-			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	    var includeTag = document.createElement('script');
 	    includeTag.setAttribute('id', 'googleanalytics');
 	    includeTag.setAttribute('src', gaJsHost + 'google-analytics.com/ga.js');
@@ -34,7 +34,7 @@ Gizmos.Prototype.Analytics = {
 			if(Prototype.Browser.IE) {
 				includeTag.onreadystatechange = function() {
 					if (this.readyState == "loaded") {
-			  		Gizmos.Prototype.Analytics.callTracker();
+			  		    Gizmos.Prototype.Analytics.callTracker();
 					}
 				}
 			} else if (Prototype.Browser.Gecko) {
