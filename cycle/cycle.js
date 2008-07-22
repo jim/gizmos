@@ -7,14 +7,14 @@ var Cycle = function(){
         var values, i, cycle, options, name, nextValue;
         
         values = Array.prototype.slice.call(arguments);
-        options = typeof(values[values.length-1]) === 'object' ? values.pop() : {};
+        options = typeof(values.slice(-1)) === 'object' ? values.pop() : {};
         
         name = options['name'] || 'default';
         
         if(cycles[name]) {
             cycle = cycles[name];
             nextValue = cycle.values[cycle.index];
-            cycle.index = (cycle.index == cycle.values.length -1) ? 0 : (cycle.index +1)
+            cycle.index = (cycle.index === cycle.values.length -1) ? 0 : (cycle.index +1);
             return nextValue;
         } else {
             cycles[name] = {

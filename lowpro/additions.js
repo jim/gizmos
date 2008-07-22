@@ -13,10 +13,8 @@
 // });
 
 if(typeof(Gizmos) == 'undefined') var Gizmos = {};
-Gizmos.LowPro = Gizmos.LowPro || {};
-Gizmos.LowPro.Event = Gizmos.LowPro.Event || {};
 
-Gizmos.LowPro.DistributionDefinitionSet = Class.create({
+Gizmos.DistributionDefinitionSet = Class.create({
  initialize: function() {
    this.definitions = $A();
  },
@@ -25,8 +23,8 @@ Gizmos.LowPro.DistributionDefinitionSet = Class.create({
  }
 });
 
-Gizmos.LowPro.Event.distribute = function(definition_method) {
- var set = new Gizmos.LowPro.DistributionDefinitionSet();
+Event.distribute = function(definition_method) {
+ var set = new Gizmos.DistributionDefinitionSet();
  definition_method(set);
  return function(e) {
    for(var i=0,len = set.definitions.length; i < len; ++i) {
@@ -46,5 +44,3 @@ Gizmos.LowPro.Event.distribute = function(definition_method) {
    }
  }
 }
-
-Event.distribute = Gizmos.LowPro.Event.distribute;

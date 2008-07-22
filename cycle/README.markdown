@@ -1,6 +1,6 @@
 ## Cycle - a Javascript implementation of Rails' Text Helper
 
-Built to ease zebra-striping a table. I've avoided any JS library-provided niceties to maximize portability. No support for naming.
+Built to ease zebra-striping a table. I've avoided any JS library-provided niceties to maximize portability.
 
 Basic usage:
 

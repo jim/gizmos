@@ -1,4 +1,4 @@
-var PromptingField = Behavior.create({
+var Gizmos.PromptingField = Behavior.create({
 
     initialize: function() {
         this.changed = false;
@@ -32,7 +32,7 @@ var PromptingField = Behavior.create({
 
     handleFormSubmission: function(event) {
         var element = event.element();
-        if (element.match('input[type=submit]') || element.match('button[type=submit]') || element.match('input[type=image]'))
+        if (element.match('input[type=submit]') || element.match('button[type=submit]') || element.match('input[type=image]')) {
             if (!this.changed && this.element.value == this.element.title) {
                 this.element.value = '';
             }
@@ -44,7 +44,7 @@ var PromptingField = Behavior.create({
 
 });
 
-var PromptingFieldWithReset = Behavior.create({
+var Gizmos.PromptingFieldWithReset = Behavior.create(Gizmos.PromptingField, {
     initialize: function($super) {
         $super();
         this.resetButton = this.element.up(2).down('a.reset');
