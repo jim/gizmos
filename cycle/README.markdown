@@ -4,13 +4,11 @@ Built to ease zebra-striping a table. I've avoided any JS library-provided nicet
 
 Basic usage:
 
-    >>> Cycle.thru('one', 'two', 'three');
+    >>> Cycle.thru('one', 'two');
     "one"
-    >>> Cycle.thru('one', 'two', 'three');
+    >>> Cycle.thru('one', 'two');
     "two"
-    >>> Cycle.thru('one', 'two', 'three');
-    "three"
-    >>> Cycle.thru('one', 'two', 'three');
+    >>> Cycle.thru('one', 'two');
     "one"
     
 Passing an object literal containing a name property allows for reset functionality:
