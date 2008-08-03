@@ -12,8 +12,13 @@ Basic usage:
     "three"
     >>> Cycle.thru('one', 'two', 'three');
     "one"
-    >>> Cycle.thru('one', 'two', 'three');
+    
+Passing an object literal containing a name property allows for reset functionality:
+    
+    >>> Cycle.thru('one', 'two', 'three', {name: 'numbers'});
+    "one"
+    >>> Cycle.thru('one', 'two', 'three', {name: 'numbers'});
     "two"
-    >>> Cycle.reset('one', 'two', 'three');
-    >>> Cycle.thru('one', 'two', 'three');
+    >>> Cycle.reset('numbers');
+    >>> Cycle.thru('one', 'two', 'three', {name: 'numbers'});
     "one"
