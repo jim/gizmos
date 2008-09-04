@@ -1,4 +1,6 @@
-var Gizmos.PromptingField = Behavior.create({
+if(typeof(Gizmos) == 'undefined') var Gizmos = {};
+
+Gizmos.PromptingField = Behavior.create({
 
     initialize: function() {
         this.changed = false;
@@ -44,7 +46,7 @@ var Gizmos.PromptingField = Behavior.create({
 
 });
 
-var Gizmos.PromptingFieldWithReset = Behavior.create(Gizmos.PromptingField, {
+Gizmos.PromptingFieldWithReset = Behavior.create(Gizmos.PromptingField, {
     initialize: function($super) {
         $super();
         this.resetButton = this.element.up(2).down('a.reset');
