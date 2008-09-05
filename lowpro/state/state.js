@@ -12,7 +12,7 @@ State.behavior = Behavior.create({
                             if (this.events[name].hasOwnProperty(selector)) {
                                 if (event.element().match(selector)) {
                                     event.stop();
-                                    this.handleEvent(this.events[name][selector]);
+                                    this.handleEvent(this.events[name][selector], event);
                                 }
                             }
                         }
@@ -24,19 +24,26 @@ State.behavior = Behavior.create({
         this.handleEvent('init');
     },
     handleEvent: function(eventName) {
-        var event = this.definition[this.state][eventName];
-        if (typeof(event) == 'object') {
-            if (typeof(event.action) === 'string') {
-                this[event.action]();
-            }
-            if(typeof(event.state) == 'string') this.changeState(event.state);          
+        var args, event, newState;
+        args = Array.prototype.slice.call(arguments, 1);
+        if (this.definition[this.state] && this.definition[this.state][eventName]) {
+            event = this.definition[this.state][eventName];
+            if (typeof(event) !== 'undefined') {
+                if (typeof(event) === 'string') {
+                    this.changeState(event);
+                } else if (typeof(event) == 'function') {
+                    newState = event.apply(this, args);
+                    if(typeof(newState) == 'string') this.changeState(newState);          
+                }
+            }            
         }
+
     },
 
     changeState: function(newStateName) {
         if (typeof(this.definition[this.state]) == 'undefined') throw "UndefinedState";
         this.handleEvent('exit');
-        // console.log("setting state to " + newStateName);
+        console.log("setting state to " + newStateName);
         this.state = newStateName;
         this.handleEvent('enter');
     }

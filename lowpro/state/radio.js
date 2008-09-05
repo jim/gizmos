@@ -2,41 +2,30 @@ var Radio = {};
 
 Radio.definition = {
     start: {
-        init: {
-            state: 'Stopped'   
-        }
+        init: 'Stopped'
     },
 
     Stopped: {
-        enter: {
-            action: 'resetCounter'
+        enter: function() {
+            this.counter = 0;
+            this.updateCounter();
         },
-        play: {
-            state: 'Playing'
-        }
+        play: 'Playing'
     },
     
     Paused: {
-        play: {
-            state: 'Playing'
-        },
-        stop: {
-            state: 'Stopped'
-        }
+        play: 'Playing',
+        stop: 'Stopped'
     },
     
     Playing: {
-        enter: {
-            action: 'startPlaying'
+        enter: function() {
+            this.interval = setInterval(function() { this.incrementCounter(); }.bind(this), 200);
         },
-        pause: {
-            state: 'Paused'
-        },
-        stop: {
-            state: 'Stopped'
-        },
-        exit: {
-            action: 'stopPlaying'
+        pause: 'Paused',
+        stop: 'Stopped',
+        exit: function() {
+            clearInterval(this.interval);
         }
     }
 };
@@ -52,16 +41,6 @@ Radio.events = {
 Radio.machine = Behavior.create(State.behavior, {
     definition: Radio.definition,
     events: Radio.events,
-    resetCounter: function() {
-        this.counter = 0;
-        this.updateCounter();
-    },
-    startPlaying: function() {
-        this.interval = setInterval(function() { this.incrementCounter(); }.bind(this), 200);
-    },
-    stopPlaying: function() {
-        clearInterval(this.interval);
-    },
     incrementCounter: function() {
         this.counter += 1;
         this.updateCounter();
