@@ -4,48 +4,103 @@ var State = {};
 
 State.behavior = Behavior.create({
     initialize: function() {
-        if (this.events) {
-            for (var name in this.events) {
-                if (this.events.hasOwnProperty(name)) {
-                    this.element.observe(name, function(event){
-                        for (var selector in this.events[name]) {
-                            if (this.events[name].hasOwnProperty(selector)) {
-                                if (event.element().match(selector)) {
-                                    event.stop();
-                                    this.handleEvent(this.events[name][selector], event);
-                                }
-                            }
-                        }
-                    }.bind(this));
-                }
-            }
-        }
+        var name, func;
+        this.boundEvents = [];
+        this.delegateEvent = this.delegateEvent.bind(this);
         this.state = 'start';
         this.handleEvent('init');
+    },
+    bindStateEvents: function() {
+        var combo, key, selector, type, matches;
+        combo = /([a-z_\- ]+):([a-z]+)/;
+        if (this.events[this.state]){
+            for (key in this.events[this.state]) {
+                 if (this.events[this.state].hasOwnProperty(key)) {
+                     matches = combo.exec(key);
+                     if (matches) {
+                         // console.debug(matches);
+                         type = matches[2];
+                     } else {
+                         // console.log(key);
+                         type = key;
+                     }
+                     this.element.observe(type, this.delegateEvent);
+                     this.boundEvents.push(type)
+                 }
+            }
+        }
+        // console.debug(this.boundEvents);
+    },
+    delegateEvent: function(event) {
+        // console.debug(event);
+        var combo, matches, method, eventName;
+        combo = /([a-z_\- ]+):([a-z]+)/;
+        if (this.events[this.state]){
+            for (key in this.events[this.state]) {
+                 if (this.events[this.state].hasOwnProperty(key)) {
+                     matches = combo.exec(key);
+                     if (matches) {
+                         selector = matches[1];
+                         type = matches[2];
+                         if (event.type === type && event.element().match(selector)) {
+                             method = this.events[this.state][key];
+                         }
+                     } else {
+                         if (event.type === key) {
+                             method = this.events[this.state][key];
+                         }
+                     }
+                     // console.debug('method:', method);
+                     if (typeof(method) === 'function') {
+                         eventName = method.call(this, event);
+                     } else if (typeof(method) === 'string') {
+                         eventName = method;
+                     }
+                     if (typeof(eventName) === 'string') {
+                         this.handleEvent(eventName, event);
+                     }
+                     
+                 }
+            }
+        }
+    },
+    unbindStateEvents: function() {
+        var i;
+        for (i=0; i<this.boundEvents.length; i++) {
+            this.element.stopObserving(this.boundEvents[i], this.delegateEvent);
+        }
+        this.boundEvents = [];
     },
     handleEvent: function(eventName) {
         var args, event, newState;
         args = Array.prototype.slice.call(arguments, 1);
+        // console.debug(eventName);
         if (this.definition[this.state] && this.definition[this.state][eventName]) {
             event = this.definition[this.state][eventName];
             if (typeof(event) !== 'undefined') {
                 if (typeof(event) === 'string') {
-                    this.changeState(event);
+                    args.unshift(event)
+                    this.changeState.apply(this, args);
                 } else if (typeof(event) == 'function') {
                     newState = event.apply(this, args);
-                    if(typeof(newState) == 'string') this.changeState(newState);          
+                    if(typeof(newState) == 'string') {
+                        args.unshift(newState)
+                        this.changeState.apply(this, args);
+                    }
                 }
             }            
         }
 
     },
 
-    changeState: function(newStateName) {
+    changeState: function(newStateName, event) {
         if (typeof(this.definition[this.state]) == 'undefined') throw "UndefinedState";
-        this.handleEvent('exit');
-        console.log("setting state to " + newStateName);
+        this.unbindStateEvents();
+        this.handleEvent('exit', event);
+        // console.log("setting state to " + newStateName);
         this.state = newStateName;
-        this.handleEvent('enter');
+        this.bindStateEvents();
+        this.handleEvent('enter', event);
     }
 });
 
@@ -53,7 +108,7 @@ State.which = function(mapping) {
     return function(event) {
         if (mapping[this.state]) {
             event.stop();
-            this.handleEvent(mapping[this.state]);
+            this.handleEvent(mapping[this.state], event);
         }
     };
 };

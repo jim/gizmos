@@ -57,12 +57,17 @@ Gizmos.GoogleTracker = function() {
     };
     that.init = init;
 
-    track = function() {
+    track = function(url) {
         var tracker;
-
-        tracker = _gat._getTracker(urchinID); 
-        tracker._initData();
-        tracker._trackPageview();
+        try {
+            tracker = _gat._getTracker(urchinID); 
+            tracker._initData();
+            if (typeof(url) === 'undefined') {
+                tracker._trackPageview();            
+            } else {
+                tracker._trackPageview(url);
+            }
+        } catch(e) {}
     };
     that.track = track;
 
