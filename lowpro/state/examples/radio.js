@@ -31,10 +31,16 @@ Radio.definition = {
 };
 
 Radio.events = {
-    click: {
-        'button.stop': 'stop',
-        'button.play': 'play',
-        'button.pause': 'pause'
+    Stopped: {
+        'button.play:click': 'play'
+    },
+    Playing: {
+        'button.stop:click': 'stop',
+        'button.pause:click': 'pause'
+    },
+    Paused: {
+        'button.stop:click': 'stop',
+        'button.play:click': 'play'
     }
 };
 

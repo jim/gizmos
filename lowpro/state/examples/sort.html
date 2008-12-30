@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    	<title>State machine sorting</title>
+    	<script src="prototype.js" type="text/javascript" charset="utf-8"></script>
+    	<script src="additions.js" type="text/javascript" charset="utf-8"></script>
+    	<script src="lowpro.js" type="text/javascript" charset="utf-8"></script>
+    	<script src="../state.js" type="text/javascript" charset="utf-8"></script>
+    	<script src="sorter.js" type="text/javascript" charset="utf-8"></script>
+	    <script type="text/javascript" charset="utf-8">
+           Event.addBehavior({
+               'ul.list': Sorter.machine
+           });
+	    </script>
+	    <style type="text/css" media="screen">
+    	    ul {
+    	        list-style: none outside;
+    	    }
+            li {
+                width: 200px;
+                padding: 12px;
+                border: solid 1px #aaa;
+                background: white;
+                margin: 2px;
+            }
+            li.selected {
+                background: #ddd;
+            }
+            div#indicator {
+                display: none;
+                height: 2px;
+                background: red;
+                position: absolute;
+            }
+    	</style>
+    </head>
+
+    <body>
+    	<ul class="list">
+    	    <li id="item_1"><a href="#">Item 1</a></li>
+    	    <li id="item_2"><a href="#">Item 2</a></li>
+    	    <li id="item_3"><a href="#">Item 3</a></li>
+    	    <li id="item_4"><a href="#">Item 4</a></li>
+    	    <li id="item_5"><a href="#">Item 5</a></li>
+    	    <li id="item_6"><a href="#">Item 6</a></li>
+    	    <li id="item_7"><a href="#">Item 7</a></li>
+    	    <li id="item_9"><a href="#">Item 8</a></li>
+    	    <li id="item_9"><a href="#">Item 9</a></li>
+    	    <li id="item_10"><a href="#">Item 10</a></li>
+    	    <li id="item_11"><a href="#">Item 11</a></li>
+    	    <li id="item_12"><a href="#">Item 12</a></li>
+	    </ul>
+    </body>
+</html>

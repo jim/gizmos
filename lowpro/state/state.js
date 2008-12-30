@@ -18,23 +18,21 @@ State.behavior = Behavior.create({
                  if (this.events[this.state].hasOwnProperty(key)) {
                      matches = combo.exec(key);
                      if (matches) {
-                         // console.debug(matches);
                          type = matches[2];
                      } else {
-                         // console.log(key);
                          type = key;
                      }
-                     this.element.observe(type, this.delegateEvent);
-                     this.boundEvents.push(type)
+                     if (!this.boundEvents.include(type)) {
+                         this.element.observe(type, this.delegateEvent);
+                         this.boundEvents.push(type)   
+                     }
                  }
             }
         }
-        // console.debug(this.boundEvents);
     },
     delegateEvent: function(event) {
-        // console.debug(event);
         var combo, matches, method, eventName;
-        combo = /([a-z_\- ]+):([a-z]+)/;
+        combo = /([a-z_\-\. ]+):([a-z]+)/;
         if (this.events[this.state]){
             for (key in this.events[this.state]) {
                  if (this.events[this.state].hasOwnProperty(key)) {
@@ -50,7 +48,6 @@ State.behavior = Behavior.create({
                              method = this.events[this.state][key];
                          }
                      }
-                     // console.debug('method:', method);
                      if (typeof(method) === 'function') {
                          eventName = method.call(this, event);
                      } else if (typeof(method) === 'string') {
@@ -74,7 +71,6 @@ State.behavior = Behavior.create({
     handleEvent: function(eventName) {
         var args, event, newState;
         args = Array.prototype.slice.call(arguments, 1);
-        // console.debug(eventName);
         if (this.definition[this.state] && this.definition[this.state][eventName]) {
             event = this.definition[this.state][eventName];
             if (typeof(event) !== 'undefined') {
@@ -97,7 +93,6 @@ State.behavior = Behavior.create({
         if (typeof(this.definition[this.state]) == 'undefined') throw "UndefinedState";
         this.unbindStateEvents();
         this.handleEvent('exit', event);
-        // console.log("setting state to " + newStateName);
         this.state = newStateName;
         this.bindStateEvents();
         this.handleEvent('enter', event);
