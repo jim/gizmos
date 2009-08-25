@@ -55,6 +55,15 @@ State.behavior = Behavior.create({
                      }
                      if (typeof(eventName) === 'string') {
                          this.handleEvent(eventName, event);
+                         /*
+                         Added this break because the event would be handled,
+                         but then all events listed after the correctly fired
+                         event would be fired as well. So we could either
+                         break here, stopping the loop after the correct event
+                         was triggered, or mess with what scope the variables
+                         are in... I went with the easy/unobtrusive.
+                         */
+                         break;
                      }
                      
                  }
