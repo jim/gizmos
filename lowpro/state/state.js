@@ -99,7 +99,7 @@ State.behavior = Behavior.create({
     },
 
     changeState: function(newStateName, event) {
-        if (typeof(this.definition[this.state]) == 'undefined') throw "UndefinedState";
+        if (typeof(this.definition[newStateName]) == 'undefined') throw "UndefinedState";
         this.unbindStateEvents();
         this.handleEvent('exit', event);
         this.state = newStateName;
